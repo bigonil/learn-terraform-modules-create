@@ -4,12 +4,13 @@
 # Terraform configuration
 
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-1"
+  profile = "lb-aws-admin"
 }
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.1.2"
+  version = ">= 5.1.2"
 
   name = var.vpc_name
   cidr = var.vpc_cidr
@@ -25,12 +26,12 @@ module "vpc" {
 
 module "ec2_instances" {
   source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "5.5.0"
+  version = ">= 5.5.0"
 
   count = 2
   name  = "my-ec2-cluster-${count.index}"
 
-  ami                    = "ami-0c5204531f799e0c6"
+  ami                    = "ami-0583d8c7a9c35822c"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [module.vpc.default_security_group_id]
   subnet_id              = module.vpc.public_subnets[0]
